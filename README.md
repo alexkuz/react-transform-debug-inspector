@@ -6,7 +6,6 @@ React inspector tranformation function for babel-plugin-wrap-react-components
 ## Install
 
 ```
-$ npm i -D babel-plugin-wrap-react-components
 $ npm i -D react-transform-debug-inspector
 ```
 
@@ -36,7 +35,8 @@ Config example:
 import 'style!css!react-object-inspector/react-object-inspector.css';
 
 function getMyPanel(component) {
-  return 'This is a ' + component.constructor.name;
+  // custom components are allowed
+  return <h1>This is a {component.constructor.name}</h1>;
 }
 
 let _enabled = false;
@@ -60,6 +60,9 @@ export default {
     // another example: enable(location.search.indexOf('debug') !== -1)
 
     enable(_enabled);
-  }
+  },
+  
+  // filter components that don't need inspector
+  showPin: component => true
 }
 ```
