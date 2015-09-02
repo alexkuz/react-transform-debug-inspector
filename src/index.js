@@ -28,10 +28,6 @@ function init(config) {
       };
     }
 
-    static defaultProps = {
-      getPanels: panels => panels
-    }
-
     render() {
       const { pinPos } = this.state.components[0];
       const pinStyle = {
@@ -160,9 +156,10 @@ function deinit() {
 let triggerCalled = false;
 
 export default function(options) {
-  const config = options.imports[0];
-
-  const enabledTrigger = config.enabledTrigger || (cb => cb(true));
+  const config = Object.assign({
+    enabledTrigger: cb => cb(true),
+    getPanels: panels => panels
+  }, options.imports[0]);
 
   function enter(e) {
     if (!_enabled) return;
@@ -214,7 +211,7 @@ export default function(options) {
   }
 
   if (!triggerCalled) {
-    enabledTrigger(enabled => {
+    config.enabledTrigger(enabled => {
       _enabled = enabled;
       if (enabled) {
         init(config);
