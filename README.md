@@ -1,5 +1,5 @@
 # react-transform-debug-inspector
-React inspector tranformation function for babel-plugin-react-transform
+React inspector tranformation function for [babel-plugin-react-transform](https://github.com/gaearon/babel-plugin-react-transform)
 
 (this feels like more of a demo than a real thing for now, but anyway)
 
