@@ -1,5 +1,5 @@
 # react-transform-debug-inspector
-React inspector tranformation function for babel-plugin-wrap-react-components
+React inspector tranformation function for babel-plugin-react-transform
 
 (this feels like more of a demo than a real thing for now, but anyway)
 
@@ -11,9 +11,9 @@ $ npm i -D react-transform-debug-inspector
 
 Update your `.babelrc`:
 ```json
-  "plugins": ["babel-plugin-wrap-react-components"],
+  "plugins": ["babel-plugin-react-transform"],
   "extra": {
-    "babel-plugin-wrap-react-components": [{
+    "babel-plugin-react-transform": [{
       "target": "react-transform-debug-inspector"
     }]
   }
@@ -22,7 +22,7 @@ Update your `.babelrc`:
 If you need advanced settings, add path to config module:
 ```json
   "extra": {
-    "babel-plugin-wrap-react-components": [{
+    "babel-plugin-react-transform": [{
       "target": "react-transform-debug-inspector",
       "imports": ["../debug/inspectorConfig"]
     }]
