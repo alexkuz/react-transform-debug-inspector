@@ -1,8 +1,6 @@
 import React from 'react';
 import ObjectInspector from 'react-object-inspector';
 
-import 'style!css!react-object-inspector/react-object-inspector.css';
-
 let _debugPopupHost;
 let _debugPopupWrapper;
 
