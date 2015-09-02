@@ -14,19 +14,19 @@ Update your `.babelrc`:
 ```json
   "plugins": ["babel-plugin-wrap-react-components"],
   "extra": {
-    "babel-plugin-wrap-react-components": {
+    "babel-plugin-wrap-react-components": [{
       "target": "react-transform-debug-inspector"
-    }
+    }]
   }
 ```
 
 If you need advanced settings, add path to config module:
 ```json
   "extra": {
-    "babel-plugin-wrap-react-components": {
+    "babel-plugin-wrap-react-components": [{
       "target": "react-transform-debug-inspector",
       "imports": ["../debug/inspectorConfig"]
-    }
+    }]
   }
 ```
 
