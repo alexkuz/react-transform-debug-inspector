@@ -24,9 +24,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "css-loader": "^0.16.0",
-    "react-object-inspector": "^0.1.4",
-    "style-loader": "^0.12.3"
+    "react-object-inspector": "^0.1.4"
   },
   "peerDependencies": {
     "babel-plugin-react-transform": "^1.0.0",
