@@ -1,6 +1,6 @@
 {
   "name": "react-transform-debug-inspector",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React inspector tranformation function for babel-plugin-wrap-react-components",
   "main": "lib/index.js",
   "scripts": {
