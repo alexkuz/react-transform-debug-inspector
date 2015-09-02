@@ -93,13 +93,21 @@ function init(config) {
         { name: 'state', getData: (c) => c.state },
         { name: 'context', getData: (c) => c.context },
       ]);
+      const component = this.state.shownComponent.component;
+
+      function getDataElement(panel) {
+        const data = panel.getData(component);
+        const isElement = React.isValidElement(data);
+
+        return isElement ? data : <ObjectInspector data={data} />
+      }
 
       return (
         <div>
           {panels.map((panel, idx) =>
             <div key={panel.name + idx}>
               <h6>{panel.name}</h6>
-              <ObjectInspector data={panel.getData(this.state.shownComponent.component)} />
+              {getDataElement(panel)}
             </div>
           )}
         </div>
@@ -156,11 +164,12 @@ let triggerCalled = false;
 export default function(options) {
   const config = Object.assign({
     enabledTrigger: cb => cb(true),
-    getPanels: panels => panels
+    getPanels: panels => panels,
+    showPin: () => true
   }, options.imports[0]);
 
   function enter(e) {
-    if (!_enabled) return;
+    if (!_enabled || !config.showPin(this)) return;
     var rect = e.target.getBoundingClientRect();
     _debugPopupHost.addComponent(this, {
       left: rect.right + window.scrollX - 24,
@@ -169,7 +178,7 @@ export default function(options) {
   }
 
   function leave(e) {
-    if (!_enabled) return;
+    if (!_enabled || !config.showPin(this)) return;
     if (e.toElement === _debugPopupHost.getPinElement()) {
       return;
     }
