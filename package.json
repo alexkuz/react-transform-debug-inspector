@@ -1,0 +1,35 @@
+{
+  "name": "react-transform-debug-inspector",
+  "version": "0.0.1",
+  "description": "React inspector tranformation function for babel-plugin-wrap-react-components",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/babel src --out-dir lib",
+    "lint": "eslint src",
+    "version": "npm run build && git add -A .",
+    "postversion": "git push",
+    "prepublish": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander <alexkuz@gmail.com> (http://kuzya.org/)",
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "babel-core": "^5.4.7",
+    "babel-eslint": "^4.0.10",
+    "babel-loader": "^5.1.2",
+    "babel-runtime": "^5.8.20",
+    "eslint": "^1.2.1",
+    "eslint-loader": "^1.0.0",
+    "eslint-plugin-babel": "^2.1.1",
+    "eslint-plugin-react": "^3.3.1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "css-loader": "^0.16.0",
+    "react-object-inspector": "^0.1.4",
+    "style-loader": "^0.12.3"
+  },
+  "peerDependencies": {
+    "babel-plugin-wrap-react-components": "^6.0.0"
+  }
+}
