@@ -31,5 +31,13 @@
   "peerDependencies": {
     "babel-plugin-react-transform": "^1.0.0",
     "babel-runtime": "^5.8.20"
-  }
+  },
+  "keywords": [
+    "babel-plugin",
+    "react-transform",
+    "dx",
+    "react",
+    "reactjs",
+    "devtools"
+  ]
 }
