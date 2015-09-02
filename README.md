@@ -24,7 +24,7 @@ If you need advanced settings, add path to config module:
   "extra": {
     "babel-plugin-react-transform": [{
       "target": "react-transform-debug-inspector",
-      "imports": ["../debug/inspectorConfig"]
+      "imports": ["./debug/inspectorConfig"]
     }]
   }
 ```
