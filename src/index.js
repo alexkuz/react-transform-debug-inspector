@@ -185,36 +185,43 @@ export default function(options) {
     _debugPopupHost.removeComponent(this);
   }
 
-  function bindMouseEvents(componentClass) {
-    if (componentClass.__debugInspectorBound__) return;
-    componentClass.__debugInspectorBound__ = true;
+  function wrapClass(componentClass) {
+    function WrappedClass() {
+      componentClass.apply(this, arguments);
 
-    const _didMount =  componentClass.prototype.componentDidMount;
-    componentClass.prototype.componentDidMount = function() {
-      if (_didMount) {
-        _didMount.call(this);
+      this.handleMouseEnter = e => {
+        enter.call(this, e);
       }
 
-      if (!this.boundEnter) {
-        this.boundEnter = enter.bind(this);
-        this.boundLeave = leave.bind(this);
+      this.handleMouseLeave = e => {
+        leave.call(this, e);
+      }
+    }
+
+    WrappedClass.prototype = Object.create(componentClass.prototype);
+    WrappedClass.prototype.constructor = componentClass;
+
+    WrappedClass.prototype.componentDidMount = function() {
+      if (componentClass.componentDidMount) {
+        componentClass.componentDidMount.call(this);
       }
 
       var el = React.findDOMNode(this);
-      el.addEventListener('mouseenter', this.boundEnter);
-      el.addEventListener('mouseleave', this.boundLeave);
+      el.addEventListener('mouseenter', this.handleMouseEnter);
+      el.addEventListener('mouseleave', this.handleMouseLeave);
     }
 
-    const _willUnmount = componentClass.prototype.componentWillUnmount;
-    componentClass.prototype.componentWillUnmount = function() {
-      if (_willUnmount) {
-        _willUnmount.call(this);
+    WrappedClass.prototype.componentWillUnmount = function() {
+      if (componentClass.componentWillUnmount) {
+        componentClass.componentWillUnmount.call(this);
       }
 
       var el = React.findDOMNode(this);
-      el.removeEventListener('mouseenter', this.boundEnter);
-      el.removeEventListener('mouseleave', this.boundLeave);
+      el.removeEventListener('mouseenter', this.handleMouseEnter);
+      el.removeEventListener('mouseleave', this.handleMouseLeave);
     }
+
+    return WrappedClass;
   }
 
   if (!triggerCalled) {
@@ -229,9 +236,5 @@ export default function(options) {
     triggerCalled = true;
   }
 
-  return componentClass => {
-    bindMouseEvents(componentClass);
-
-    return componentClass;
-  }
+  return componentClass => wrapClass(componentClass);
 }
