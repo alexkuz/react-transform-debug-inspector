@@ -11,9 +11,9 @@ $ npm i -D react-transform-debug-inspector
 
 Update your `.babelrc`:
 ```json
-  "plugins": ["babel-plugin-react-transform"],
+  "plugins": ["react-transform"],
   "extra": {
-    "babel-plugin-react-transform": [{
+    "react-transform": [{
       "target": "react-transform-debug-inspector"
     }]
   }
@@ -22,7 +22,7 @@ Update your `.babelrc`:
 If you need advanced settings, add path to config module:
 ```json
   "extra": {
-    "babel-plugin-react-transform": [{
+    "react-transform": [{
       "target": "react-transform-debug-inspector",
       "imports": ["./debug/inspectorConfig"]
     }]
