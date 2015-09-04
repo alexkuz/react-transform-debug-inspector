@@ -32,7 +32,7 @@ If you need advanced settings, add path to config module:
 Config example:
 ```js
 // import styles for json tree
-import 'style!css!react-object-inspector/react-object-inspector.css';
+import 'style!css!react-transform-debug-inspector/debug-inspector.css';
 
 function getMyPanel(component) {
   // custom components are allowed

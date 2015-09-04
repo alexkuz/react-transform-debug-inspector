@@ -1,5 +1,5 @@
 import React from 'react';
-import ObjectInspector from 'react-object-inspector';
+import ObjectInspector from '@alexkuz/react-object-inspector';
 
 let _debugPopupHost;
 let _debugPopupWrapper;
@@ -99,7 +99,7 @@ function init(config) {
         const data = panel.getData(component);
         const isElement = React.isValidElement(data);
 
-        return isElement ? data : <ObjectInspector data={data} />
+        return isElement ? data : <ObjectInspector className='RT-debug-inspector' data={data} />
       }
 
       return (
@@ -200,10 +200,16 @@ export default function(options) {
 
     WrappedClass.prototype = Object.create(componentClass.prototype);
     WrappedClass.prototype.constructor = componentClass;
+    WrappedClass.displayName = componentClass.displayName ||
+      componentClass.prototype.constructor.name;
+
+    Object.getOwnPropertyNames(componentClass)
+      .filter(n => ['length', 'name', 'prototype'].indexOf(n) === -1)
+      .forEach(n => WrappedClass[n] = componentClass[n]);
 
     WrappedClass.prototype.componentDidMount = function() {
-      if (componentClass.componentDidMount) {
-        componentClass.componentDidMount.call(this);
+      if (componentClass.prototype.componentDidMount) {
+        componentClass.prototype.componentDidMount.call(this);
       }
 
       var el = React.findDOMNode(this);
@@ -212,8 +218,8 @@ export default function(options) {
     }
 
     WrappedClass.prototype.componentWillUnmount = function() {
-      if (componentClass.componentWillUnmount) {
-        componentClass.componentWillUnmount.call(this);
+      if (componentClass.prototype.componentWillUnmount) {
+        componentClass.prototype.componentWillUnmount.call(this);
       }
 
       var el = React.findDOMNode(this);
