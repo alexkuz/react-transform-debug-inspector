@@ -60,7 +60,8 @@ function init(config) {
         position: 'absolute',
         top: '15px',
         right: '15px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        lineHeight: '15px'
       };
 
       return (
@@ -91,15 +92,16 @@ function init(config) {
 
     renderPanels() {
       const { getPanels } = this.props;
-      const panels = getPanels([
-        { name: 'props', getData: (c) => c.props },
-        { name: 'state', getData: (c) => c.state },
-        { name: 'context', getData: (c) => c.context },
-      ]);
       const component = this.state.shownComponent.component;
 
+      const panels = getPanels([
+        { name: 'props', data: component.props },
+        { name: 'state', data: component.state },
+        { name: 'context', data: component.context },
+      ], component);
+
       function getDataElement(panel) {
-        const data = panel.getData(component);
+        const data = panel.data;
         const isElement = React.isValidElement(data);
 
         return isElement ? data : <ObjectInspector className='RT-debug-inspector' data={data} />
