@@ -36,7 +36,7 @@ import 'style!css!react-transform-debug-inspector/debug-inspector.css';
 
 import { DevTools, LogMonitor } from 'redux-devtools/lib/react';
 
-function getMyPanel(component) {
+function getReduxPanel(component) {
   // instead of plain object or literal, you can pass any component - like redux DevTools
   if (component.context.store) {
     return (
@@ -49,10 +49,15 @@ let _enabled = false;
 
 export default {
   // add your custom panels ('props', 'state', 'context' by default)
-  getPanels: defaultPanels => [{
-    name: 'myPanel',
-    getData: getMyPanel
-  }, ...defaultPanels],
+  getPanels: (defaultPanels, component) => [
+    ...(
+      component.context.store ? [{
+        name: 'redux',
+        data: getReduxPanel(component)
+      }] : []
+    ),
+    ...defaultPanels
+  ],
 
   // enable or disable inspector with key binding or whatever
   enabledTrigger: enable => {
