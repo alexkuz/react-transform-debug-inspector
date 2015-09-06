@@ -1,5 +1,6 @@
 import React from 'react';
 import ObjectInspector from '@alexkuz/react-object-inspector';
+import Dock from 'react-dock';
 
 let _debugPopupHost;
 let _debugPopupWrapper;
@@ -15,26 +16,31 @@ function init(config) {
     constructor(props) {
       super(props);
       const nullComponent = {
-        pinPos: { left: -1000, top: -1000 },
+        pinRect: { left: -10000, right: -10000, top: -1000 },
         component: null
       };
 
       this.state = {
         components: [nullComponent],
-        isShown: false,
-        shownComponent: nullComponent
+        isVisible: false,
+        shownComponent: nullComponent,
+        position: 'left'
       };
     }
 
     render() {
-      const { pinPos } = this.state.components[0];
+      const { position, components: [{ pinRect }] } = this.state;
+
       const pinStyle = {
         position: 'absolute',
         backgroundColor: '#FFFF33',
         width: '16px',
         height: '16px',
-        left: pinPos.left + 'px',
-        top: pinPos.top + 'px',
+        left: (position === 'left' ?
+          (pinRect.right + window.scrollX - 24) + 'px' :
+          (pinRect.left + window.scrollX + 8) + 'px'
+        ),
+        top: (pinRect.top + window.scrollY + 8) + 'px',
         borderRadius: '100px',
         boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
         pointerEvents: 'auto',
@@ -46,25 +52,11 @@ function init(config) {
         zIndex: '999999999',
         top: 0,
         left: 0,
-        width: this.state.isShown ? '100%' : 0,
-        pointerEvents: 'none'
+        width: 0,
+        height: 0
       };
 
-      const inspectStyle = {
-        position: 'fixed',
-        top: 0,
-        left: this.state.isShown ? 0 : - window.innerWidth / 3,
-        bottom: 0,
-        width: '30%',
-        backgroundColor: '#FAFAFA',
-        pointerEvents: 'auto',
-        overflowY: 'auto',
-        boxShadow: '0 1px 6px rgba(0,0,0,0.3)',
-        padding: '10px',
-        transition: 'left 0.15s ease-out'
-      };
-
-      const closeStyle = {
+      const bittonsStyle = {
         position: 'absolute',
         top: '15px',
         right: '15px',
@@ -73,12 +65,23 @@ function init(config) {
 
       return (
         <div style={wrapperStyle}>
-          <div style={inspectStyle}>
-            <div style={closeStyle} onClick={this.handleCloseClick}>
-              ×
+          <Dock isVisible={this.state.isVisible}
+                position={this.state.position}
+                onVisibleChanged={isVisible => this.setState({ isVisible })}
+                dimMode='none'>
+            <div style={bittonsStyle}>
+              <span onClick={this.handleLeftClick}>
+                {'\u21E4'}
+              </span>
+              <span onClick={this.handleRightClick} style={{ marginLeft: '10px' }}>
+                {'\u21E5'}
+              </span>
+              <span onClick={this.handleCloseClick} style={{ marginLeft: '10px' }}>
+                ×
+              </span>
             </div>
-            {this.state.isShown && this.renderPanels()}
-          </div>
+            {this.state.isVisible && this.renderPanels()}
+          </Dock>
           <div style={pinStyle}
                onClick={this.handlePinClick}
                ref='pin' />
@@ -106,7 +109,7 @@ function init(config) {
         <div>
           {panels.map((panel, idx) =>
             <div key={panel.name + idx}>
-              <h6>{panel.name}</h6>
+              <h6 style={{ padding: '0 10px' }}>{panel.name}</h6>
               {getDataElement(panel)}
             </div>
           )}
@@ -114,10 +117,10 @@ function init(config) {
       );
     }
 
-    addComponent(component, pinPos) {
+    addComponent(component, rect) {
       this.setState({ components: [{
         component,
-        pinPos
+        pinRect: rect
       }, ...this.state.components] });
     }
 
@@ -126,13 +129,22 @@ function init(config) {
     }
 
     handleCloseClick = () => {
-      this.setState({ isShown: false });
+      this.setState({ isVisible: false });
+    }
+
+    handleLeftClick = () => {
+      this.setState({ position: 'left' });
+    }
+
+    handleRightClick = () => {
+      this.setState({ position: 'right' });
     }
 
     handlePinClick = () => {
+      const { isVisible, components: [topComponent], shownComponent } = this.state;
       this.setState({
-        isShown: !this.state.isShown || this.state.components[0] !== this.state.shownComponent,
-        shownComponent: this.state.components[0]
+        isVisible: !isVisible || topComponent !== shownComponent,
+        shownComponent: topComponent
       });
     }
 
@@ -171,10 +183,7 @@ export default function(options) {
   function enter(e) {
     if (!_enabled || !config.showPin(this)) return;
     var rect = e.target.getBoundingClientRect();
-    _debugPopupHost.addComponent(this, {
-      left: rect.right + window.scrollX - 24,
-      top: rect.top + window.scrollY + 8
-    });
+    _debugPopupHost.addComponent(this, rect);
   }
 
   function leave(e) {

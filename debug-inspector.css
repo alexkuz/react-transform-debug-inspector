@@ -3,6 +3,7 @@
   font-size: 11px;
   line-height: 14px;
   cursor: default;
+  padding: 0 10px;
 }
 
 .RT-debug-inspector-unselectable {

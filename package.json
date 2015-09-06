@@ -24,7 +24,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@alexkuz/react-object-inspector": "^0.1.4"
+    "@alexkuz/react-object-inspector": "^0.1.4",
+    "react-dock": "0.0.2"
   },
   "peerDependencies": {
     "babel-plugin-react-transform": "^1.0.0",
