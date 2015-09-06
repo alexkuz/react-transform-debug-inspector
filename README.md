@@ -34,9 +34,15 @@ Config example:
 // import styles for json tree
 import 'style!css!react-transform-debug-inspector/debug-inspector.css';
 
+import { DevTools, LogMonitor } from 'redux-devtools/lib/react';
+
 function getMyPanel(component) {
-  // custom components are allowed
-  return <h1>This is a {component.constructor.name}</h1>;
+  // instead of plain object or literal, you can pass any component - like redux DevTools
+  if (component.context.store) {
+    return (
+      <DevTools store={component.context.store} monitor={LogMonitor} />
+    );
+  }
 }
 
 let _enabled = false;
@@ -51,7 +57,7 @@ export default {
   // enable or disable inspector with key binding or whatever
   enabledTrigger: enable => {
     window.addEventListener('keydown', e => {
-      if (e.keyCode === 49 && e.metaKey) {
+      if (e.keyCode === 220) {
         _enabled = !_enabled;
         enable(_enabled);
       }
