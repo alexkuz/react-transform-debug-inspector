@@ -29,7 +29,8 @@
   },
   "peerDependencies": {
     "babel-plugin-react-transform": "^1.0.0",
-    "babel-runtime": "^5.8.20"
+    "babel-runtime": "^5.8.20",
+    "radium": "^0.13.8"
   },
   "keywords": [
     "babel-plugin",
